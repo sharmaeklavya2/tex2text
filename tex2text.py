@@ -4,6 +4,7 @@
 """Convert TeX to plaintext or markdown"""
 
 from __future__ import print_function
+import re
 import argparse
 
 
@@ -179,11 +180,16 @@ def main():
         help='only output ascii text')
     parser.add_argument('--keep-math', action='store_true', default=False,
         help="do not convert math (perhaps we're using MathJax)")
+    parser.add_argument('--fix-spacing', action='store_true', default=False,
+        help="convert lone newlines to space and coalesce multiple spaces.")
     args = parser.parse_args()
 
     with open(args.fpath) as fp:
         tex = fp.read()
     s = ''.join(tex2text([tex], args))
+    if args.fix_spacing:
+        s = re.sub(r'([^\n])\n([^\n])', r'\1 \2', s)
+        s = re.sub(r' +', r' ', s)
     if args.output:
         with open(args.output, 'w') as fp:
             fp.write(s)
