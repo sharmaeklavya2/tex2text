@@ -19,7 +19,7 @@ SYMBOLS = {
     'beta': ('β', 'beta'),
     'gamma': ('γ', 'gamma'),
     'delta': ('δ', 'delta'),
-    'eps': ('ε', 'eps'),
+    'eps': ('ε', 'epsilon'),
     'epsilon': ('ε', 'epsilon'),
     'varepsilon': ('ε', 'epsilon'),
 }
