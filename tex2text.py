@@ -43,26 +43,41 @@ PLAIN_MACROS = {
 
 MARKDOWN_MACROS = PLAIN_MACROS
 
+MATH_SYMBOLS = {
+    'eps': '\\epsilon',
+    'Th': '^{\\textrm{th}}',
+}
+
+MATH_MACROS = {}
+
 MACROS = {
     'plain': PLAIN_MACROS,
     'markdown': MARKDOWN_MACROS,
 }
 
 
-def apply_macro(name, x, args):
-    if x is None:
-        if name in CONSTANTS:
-            return name
-        elif name in SYMBOLS:
-            return SYMBOLS[name][1 - args.unicode]
+def apply_macro(name, x, args, math_mode):
+    if math_mode:
+        if x is None and name in MATH_SYMBOLS:
+            return MATH_SYMBOLS[name]
+        elif x is None and name in MATH_MACROS:
+            return MATH_MACROS[name](x)
         else:
-            raise UnknownMacroError('unknown macro ' + name)
+            return '\\' + name
     else:
-        macros = MACROS[args.fmt]
-        if name in macros:
-            return macros[name](x)
+        if x is None:
+            if name in CONSTANTS:
+                return name
+            elif name in SYMBOLS:
+                return SYMBOLS[name][1 - args.unicode]
+            else:
+                raise UnknownMacroError('unknown macro ' + name)
         else:
-            raise UnknownMacroError('unknown macro ' + name)
+            macros = MACROS[args.fmt]
+            if name in macros:
+                return macros[name](x)
+            else:
+                raise UnknownMacroError('unknown macro ' + name)
 
 
 def find_matching_paren(s, start, ch1, ch2):
@@ -125,12 +140,8 @@ def replace_macros(texs, args):
     for tex in texs:
         head = 0
         math_mode = False
-        math_mode_pattern = '$' if args.keep_math else '$\\'
         while True:
-            if math_mode:
-                ch, pos = find_chars(tex, head, math_mode_pattern)
-            else:
-                ch, pos = find_chars(tex, head, '$\\')
+            ch, pos = find_chars(tex, head, '$\\')
             if pos == -1:
                 output.append(tex[head:])
                 break
@@ -159,10 +170,12 @@ def replace_macros(texs, args):
                     head += 1
                     pos = find_matching_paren(tex, head, '{', '}')
                     raw_arg = tex[head: pos]
-                    output.append(apply_macro(macro_name, raw_arg, args))
+                    output.append(apply_macro(macro_name, raw_arg, args,
+                        args.keep_math and math_mode))
                     head = pos + 1
                 else:
-                    output.append(apply_macro(macro_name, None, args))
+                    output.append(apply_macro(macro_name, None, args,
+                        args.keep_math and math_mode))
     return output
 
 
