@@ -1,0 +1,15 @@
+We study an extension of 2D geometric bin packing.
+Here each item $i$ is a rectangle of width $w(i)$ and height $h(i)$
+that has $d$ nonnegative weights $v_1(i), v_2(i), \ldots, v_d(i)$ associated with it.
+Our goal is to compute an axis-parallel non-overlapping packing of the items into bins so that
+for all $j \in [d]$, the sum of the $j\Th$ weight of items in each bin is at most 1.
+Despite being well studied in practice, surprisingly,
+approximation algorithms for this problem have rarely been explored.
+We first obtain two simple algorithms having asymptotic approximation ratios (AARs)
+$6(d+1)$ and $3(1 + \ln(d+1) + \eps)$.
+We then extend the Round-and-Approx (R\&A) framework
+\texorpdfstring{\cite{bansal2014binpacking}}{[Bansal-Khan, SODA'14]}
+to wider classes of algorithms, and show how it can be adapted to this problem.
+Using more sophisticated techniques, we obtain algorithms having
+an AAR of $2(1+\ln((d+4)/2))+\eps$,
+which improves to $2.919+\eps$ for the special case of $d=1$.
