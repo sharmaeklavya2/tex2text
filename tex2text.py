@@ -41,7 +41,11 @@ PLAIN_MACROS = {
     'cite': (lambda x: '(' + x + ')'),
 }
 
-MARKDOWN_MACROS = PLAIN_MACROS
+MARKDOWN_MACROS = {
+    'emph': (lambda x: '*' + x + '*'),
+    'textbf': (lambda x: '**' + x + '**'),
+    'cite': (lambda x: '(' + x + ')'),
+}
 
 MATH_SYMBOLS = {
     'eps': '\\epsilon',
