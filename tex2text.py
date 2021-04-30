@@ -14,6 +14,8 @@ SYMBOLS = {
     'Th': ('th', 'th'),
     'infty': ('∞', 'infinity'),
     'approx': ('≈', 'approx'),
+    'le': ('≤', '<='),
+    'ge': ('≥', '>='),
 
     'alpha': ('α', 'alpha'),
     'beta': ('β', 'beta'),
@@ -22,6 +24,7 @@ SYMBOLS = {
     'eps': ('ε', 'epsilon'),
     'epsilon': ('ε', 'epsilon'),
     'varepsilon': ('ε', 'epsilon'),
+    'psi': ('ψ', 'psi'),
 }
 
 CONSTANTS = set(['ln', 'log', '&', '_', 'opt', 'OPT'])
