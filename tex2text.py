@@ -25,6 +25,11 @@ SYMBOLS = {
     'epsilon': ('ε', 'epsilon'),
     'varepsilon': ('ε', 'epsilon'),
     'psi': ('ψ', 'psi'),
+    'lambda': ('λ', 'lambda'),
+    'mu': ('μ', 'mu'),
+    'phi': ('ϕ', 'phi'),
+    'rho': ('ρ', 'rho'),
+    'sigma': ('σ', 'sigma'),
 }
 
 CONSTANTS = set(['ln', 'log', '&', '_', 'opt', 'OPT'])
