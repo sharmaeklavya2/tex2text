@@ -112,6 +112,8 @@ SYMBOLS = {
     'supset': ('⊃', 'supset'),
     'subseteq': ('⊆', 'subseteq'),
     'supseteq': ('⊇', 'supseteq'),
+    'nsubseteq': ('⊈', 'nsubseteq'),
+    'nsupseteq': ('⊉', 'nsupseteq'),
     'subsetneq': ('⊊', 'subsetneq'),
     'supsetneq': ('⊋', 'supsetneq'),
     'vdash': ('⊢', '|-'),
