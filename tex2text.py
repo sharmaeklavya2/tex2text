@@ -336,11 +336,11 @@ def replace_alt_text(texs, args):
     return output
 
 
-def replace_macros(texs, args):
+def replace_macros(texs, args, orig_math_mode=False):
     output = []
     for tex in texs:
         head = 0
-        math_mode = False
+        math_mode = orig_math_mode
         while True:
             ch, pos = find_chars(tex, head, '$\\')
             if pos == -1:
@@ -371,7 +371,7 @@ def replace_macros(texs, args):
                 while tex[head] == '{':
                     head += 1
                     pos = find_matching_paren(tex, head, '{', '}')
-                    raw_args.append(tex[head: pos])
+                    raw_args.append(''.join(replace_macros([tex[head: pos]], args, math_mode)))
                     head = pos + 1
                 output.append(apply_macro(macro_name, raw_args, args,
                     args.keep_math and math_mode))
