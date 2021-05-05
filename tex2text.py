@@ -232,19 +232,6 @@ MARKDOWN_MACROS = {
     'textit': delim_func('*', '*'),
     'textsl': delim_func('*', '*'),
     'textbf': delim_func('**', '**'),
-    'textup': identity_func,
-    'textsc': identity_func,
-    'textrm': identity_func,
-    'textsf': identity_func,
-    'texttt': identity_func,
-    'mathrm': identity_func,
-    'mathbf': identity_func,
-    'mathsf': identity_func,
-    'mathtt': identity_func,
-    'mathcal': identity_func,
-    'underline': identity_func,
-    'operatorname': identity_func,
-    'sqrt': delim_func('sqrt(', ')'),
 }
 
 MATH_SYMBOLS = {
@@ -256,8 +243,9 @@ MATH_MACROS = {}
 
 MACROS = {
     'plain': PLAIN_MACROS,
-    'markdown': MARKDOWN_MACROS,
+    'markdown': PLAIN_MACROS.copy(),
 }
+MACROS['markdown'].update(MARKDOWN_MACROS)
 
 
 def apply_macro(name, x, args, math_mode):
