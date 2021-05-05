@@ -210,6 +210,10 @@ def delim_func(d1, d2):
     return func
 
 
+def paren_if_needed(x):
+    return x if x.isalnum() else '(' + x + ')'
+
+
 PLAIN_MACROS = {
     'emph': identity_func,
     'textit': identity_func,
@@ -227,6 +231,7 @@ PLAIN_MACROS = {
     'underline': identity_func,
     'operatorname': identity_func,
     'sqrt': delim_func('sqrt(', ')'),
+    'frac': (lambda x, y: paren_if_needed(x) + '/' + paren_if_needed(y)),
 }
 
 MARKDOWN_MACROS = {
@@ -252,14 +257,14 @@ MACROS['markdown'].update(MARKDOWN_MACROS)
 
 def apply_macro(name, x, args, math_mode):
     if math_mode:
-        if x is None and name in MATH_SYMBOLS:
+        if not x and name in MATH_SYMBOLS:
             return MATH_SYMBOLS[name]
-        elif x is None and name in MATH_MACROS:
+        elif not x and name in MATH_MACROS:
             return MATH_MACROS[name](x)
         else:
             return '\\' + name
     else:
-        if x is None:
+        if not x:
             if name in CONSTANTS:
                 return name
             elif name in SYMBOLS:
@@ -271,7 +276,7 @@ def apply_macro(name, x, args, math_mode):
         else:
             macros = MACROS[args.fmt]
             if name in macros:
-                return macros[name](x)
+                return macros[name](*x)
             else:
                 raise UnknownMacroError('unknown macro ' + name)
 
@@ -362,16 +367,14 @@ def replace_macros(texs, args):
                     head += 1
 
                 # read macro arg
-                if tex[head] == '{':
+                raw_args = []
+                while tex[head] == '{':
                     head += 1
                     pos = find_matching_paren(tex, head, '{', '}')
-                    raw_arg = tex[head: pos]
-                    output.append(apply_macro(macro_name, raw_arg, args,
-                        args.keep_math and math_mode))
+                    raw_args.append(tex[head: pos])
                     head = pos + 1
-                else:
-                    output.append(apply_macro(macro_name, None, args,
-                        args.keep_math and math_mode))
+                output.append(apply_macro(macro_name, raw_args, args,
+                    args.keep_math and math_mode))
     return output
 
 
