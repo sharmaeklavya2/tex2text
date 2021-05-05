@@ -262,7 +262,7 @@ def apply_macro(name, x, args, math_mode):
         elif not x and name in MATH_MACROS:
             return MATH_MACROS[name](x)
         else:
-            return '\\' + name
+            return '\\' + name + ''.join(['{' + y + '}' for y in x])
     else:
         if not x:
             if name in CONSTANTS:
