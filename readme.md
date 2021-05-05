@@ -11,6 +11,7 @@ Example invocations:
 
 Here is how it roughly works:
 
+* Remove all comments
 * Replace occurrences of `\texorpdfstring{X}{Y}` by `Y`.
 * Remove inline math delimiting characters `$`
 (use the `--keep-math` option to prevent this.

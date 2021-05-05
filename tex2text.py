@@ -191,8 +191,29 @@ def replace_macros(texs, args):
     return output
 
 
+def remove_tex_comments(texs):
+    output = []
+    for tex in texs:
+        head = 0
+        # invariant: tex[:head] has been processed and added to output
+        while True:
+            perc_index = tex.find('%', head)
+            if perc_index == -1:
+                output.append(tex[head:])
+                break
+            else:
+                if perc_index > head:
+                    output.append(tex[head: perc_index])
+                newline_index = tex.find('\n', perc_index + 1)
+                if newline_index == -1:
+                    break
+                else:
+                    head = newline_index + 1
+    return output
+
+
 def tex2text(texs, args):
-    return replace_macros(replace_alt_text(texs, args), args)
+    return replace_macros(replace_alt_text(remove_tex_comments(texs), args), args)
 
 
 def main():
