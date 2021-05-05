@@ -167,6 +167,11 @@ SYMBOLS = {
     'lVert': ('∥', '||'),
     'rVert': ('∥', '||'),
 
+    # big operators
+    'sum': ('∑', 'sum'),
+    'prod': ('∏', 'prod'),
+    'int': ('∫', 'integral'),
+
     # spacing
     '\\': ('\n', '\n'),
     ',': (' ', ' '),
@@ -182,7 +187,7 @@ CONSTANTS = set(['&', '_', '{', '}', 'OPT', 'opt',
 
 
 INVISIBLE_SYMBOLS = set([
-    'displaystyle',
+    'displaystyle', '!',
     'tiny', 'scriptsize', 'footnotesize', 'small', 'normalsize',
     'large', 'Large', 'LARGE', 'huge', 'Huge',
     'left', 'right', 'big', 'Big', 'bigg', 'Bigg',
@@ -218,6 +223,8 @@ PLAIN_MACROS = {
     'mathsf': identity_func,
     'mathtt': identity_func,
     'underline': identity_func,
+    'operatorname': identity_func,
+    'sqrt': delim_func('sqrt(', ')'),
 }
 
 MARKDOWN_MACROS = {
@@ -236,6 +243,8 @@ MARKDOWN_MACROS = {
     'mathtt': identity_func,
     'mathcal': identity_func,
     'underline': identity_func,
+    'operatorname': identity_func,
+    'sqrt': delim_func('sqrt(', ')'),
 }
 
 MATH_SYMBOLS = {
