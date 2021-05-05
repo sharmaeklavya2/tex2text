@@ -181,6 +181,14 @@ CONSTANTS = set(['&', '_', '{', '}', 'OPT', 'opt',
     'lim', 'limsup', 'deg', 'det', 'dim'])
 
 
+INVISIBLE_SYMBOLS = set([
+    'displaystyle',
+    'tiny', 'scriptsize', 'footnotesize', 'small', 'normalsize',
+    'large', 'Large', 'LARGE', 'huge', 'Huge',
+    'left', 'right', 'big', 'Big', 'bigg', 'Bigg',
+])
+
+
 class UnknownMacroError(ValueError):
     pass
 
@@ -228,6 +236,8 @@ def apply_macro(name, x, args, math_mode):
                 return name
             elif name in SYMBOLS:
                 return SYMBOLS[name][1 - args.unicode]
+            elif name in INVISIBLE_SYMBOLS:
+                return ''
             else:
                 raise UnknownMacroError('unknown macro ' + name)
         else:
