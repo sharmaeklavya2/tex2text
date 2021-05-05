@@ -197,16 +197,45 @@ def identity_func(x):
     return x
 
 
+def delim_func(d1, d2):
+    def func(x):
+        return d1 + x + d2
+    return func
+
+
 PLAIN_MACROS = {
     'emph': identity_func,
+    'textit': identity_func,
+    'textsl': identity_func,
     'textbf': identity_func,
-    'cite': (lambda x: '(' + x + ')'),
+    'textup': identity_func,
+    'textsc': identity_func,
+    'textrm': identity_func,
+    'textsf': identity_func,
+    'texttt': identity_func,
+    'mathrm': identity_func,
+    'mathbf': identity_func,
+    'mathsf': identity_func,
+    'mathtt': identity_func,
+    'underline': identity_func,
 }
 
 MARKDOWN_MACROS = {
-    'emph': (lambda x: '*' + x + '*'),
-    'textbf': (lambda x: '**' + x + '**'),
-    'cite': (lambda x: '(' + x + ')'),
+    'emph': delim_func('*', '*'),
+    'textit': delim_func('*', '*'),
+    'textsl': delim_func('*', '*'),
+    'textbf': delim_func('**', '**'),
+    'textup': identity_func,
+    'textsc': identity_func,
+    'textrm': identity_func,
+    'textsf': identity_func,
+    'texttt': identity_func,
+    'mathrm': identity_func,
+    'mathbf': identity_func,
+    'mathsf': identity_func,
+    'mathtt': identity_func,
+    'mathcal': identity_func,
+    'underline': identity_func,
 }
 
 MATH_SYMBOLS = {
