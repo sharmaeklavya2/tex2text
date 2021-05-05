@@ -342,7 +342,7 @@ def replace_macros(texs, args, orig_math_mode=False):
         head = 0
         math_mode = orig_math_mode
         while True:
-            ch, pos = find_chars(tex, head, '$\\')
+            ch, pos = find_chars(tex, head, '$\\{}')
             if pos == -1:
                 output.append(tex[head:])
                 break
@@ -354,6 +354,18 @@ def replace_macros(texs, args, orig_math_mode=False):
                 math_mode = not math_mode
                 if args.keep_math:
                     output.append('$')
+            elif ch == '{':
+                if math_mode:
+                    if args.keep_math:
+                        output.append('{')
+                    else:
+                        output.append('(')
+            elif ch == '}':
+                if math_mode:
+                    if args.keep_math:
+                        output.append('}')
+                    else:
+                        output.append(')')
             else:
                 # read macro name
                 if tex[head].isalpha():
