@@ -21,7 +21,7 @@ using [MathJax](https://www.mathjax.org/)).
 `\alpha` becomes `α`, `\infty` becomes `∞`, etc.
 Macros `\emph` and `\textbf` are ignored in plain text mode,
 but processed appropriately in markdown mode.
-* Throw an error if an unknown macro is encountered.
+* Warn if an unknown macro is encountered.
 
 The default output format is plain text, but markdown can be obtained using
 the `--fmt=markdown` option.

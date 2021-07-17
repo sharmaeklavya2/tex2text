@@ -4,9 +4,12 @@
 """Convert TeX to plaintext or markdown"""
 
 from __future__ import print_function
+import sys
 import re
 import argparse
 
+
+retcode = 0
 
 SYMBOLS = {
     'Th': ('th', 'th'),
@@ -198,10 +201,6 @@ INVISIBLE_SYMBOLS = set([
 ])
 
 
-class UnknownMacroError(ValueError):
-    pass
-
-
 def identity_func(x):
     return x
 
@@ -257,6 +256,16 @@ MACROS = {
 MACROS['markdown'].update(MARKDOWN_MACROS)
 
 
+def unknown_macro_warn(name):
+    print('WARNING: unknown macro: \\' + name, file=sys.stderr)
+    global retcode
+    retcode = 1
+
+
+def reconstruct_macro(name, x):
+    return '\\' + name + ''.join(['{' + y + '}' for y in x])
+
+
 def apply_macro(name, x, args, math_mode):
     if math_mode:
         if not x and name in MATH_SYMBOLS:
@@ -264,7 +273,7 @@ def apply_macro(name, x, args, math_mode):
         elif not x and name in MATH_MACROS:
             return MATH_MACROS[name](x)
         else:
-            return '\\' + name + ''.join(['{' + y + '}' for y in x])
+            return reconstruct_macro(name, x)
     else:
         if not x:
             if name in CONSTANTS:
@@ -274,13 +283,15 @@ def apply_macro(name, x, args, math_mode):
             elif name in INVISIBLE_SYMBOLS:
                 return ''
             else:
-                raise UnknownMacroError('unknown macro ' + name)
+                unknown_macro_warn(name)
+                return reconstruct_macro(name, x)
         else:
             macros = MACROS[args.fmt]
             if name in macros:
                 return macros[name](*x)
             else:
-                raise UnknownMacroError('unknown macro ' + name)
+                unknown_macro_warn(name)
+                return reconstruct_macro(name, x)
 
 
 def find_matching_paren(s, start, ch1, ch2):
@@ -446,3 +457,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    sys.exit(retcode)
