@@ -11,6 +11,8 @@ import argparse
 SYMBOLS = {
     'Th': ('th', 'th'),
     'infty': ('∞', 'infinity'),
+    'because': ('∵', 'because'),
+    'therefore': ('∴', 'therefore'),
     'ldots': ('…', '...'),
     'cdots': ('⋯', '...'),
     'vdots': ('⋮', '...'),
