@@ -324,11 +324,11 @@ def clean_alt_text(s, args):
         return s.replace('\\_', '_')
 
 
-def replace_alt_text(texs, args):
+def replace_alt_text(texs, args, alt_macro_name='texorpdfstring'):
     output = []
     for tex in texs:
         head = 0
-        tpdf = '\\texorpdfstring{'
+        tpdf = '\\' + alt_macro_name + '{'
         n_tpdf = len(tpdf)
         while True:
             pos = tex.find(tpdf, head)
@@ -341,7 +341,7 @@ def replace_alt_text(texs, args):
 
             pos = find_matching_paren(tex, head, '{', '}') + 1
             if tex[pos] != '{':
-                raise ValueError("second '{' not found for \\texorpdfstring")
+                raise ValueError("second '{' not found for \\" + alt_macro_name)
             head = pos + 1
             pos = find_matching_paren(tex, head, '{', '}')
             output.append(clean_alt_text(tex[head: pos], args))
@@ -425,7 +425,11 @@ def remove_tex_comments(texs):
 
 
 def tex2text(texs, args):
-    return replace_macros(replace_alt_text(remove_tex_comments(texs), args), args)
+    texs = remove_tex_comments(texs)
+    texs = replace_alt_text(texs, args)
+    texs = replace_alt_text(texs, args, 'citeorstring')
+    texs = replace_macros(texs, args)
+    return texs
 
 
 def main():
