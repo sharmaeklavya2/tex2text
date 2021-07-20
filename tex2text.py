@@ -382,8 +382,8 @@ def replace_macros(texs, args, orig_math_mode=False):
             else:
                 # read macro name
                 if tex[head].isalpha():
-                    for pos in range(head, len(tex)):
-                        if not tex[pos].isalpha():
+                    for pos in range(head, len(tex) + 1):
+                        if pos == len(tex) or not tex[pos].isalpha():
                             break
                     macro_name = tex[head: pos]
                     head = pos
@@ -393,7 +393,7 @@ def replace_macros(texs, args, orig_math_mode=False):
 
                 # read macro arg
                 raw_args = []
-                while tex[head] == '{':
+                while head < len(tex) and tex[head] == '{':
                     head += 1
                     pos = find_matching_paren(tex, head, '{', '}')
                     raw_args.append(''.join(replace_macros([tex[head: pos]], args, math_mode)))
