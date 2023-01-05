@@ -437,11 +437,23 @@ def remove_tex_comments(texs):
     return output
 
 
+def replace_spchars(texs, args):
+    output = []
+    for tex in texs:
+        tex = tex.replace('~', ' ')
+        if args.unicode:
+            tex = tex.replace('---', '—')
+            tex = tex.replace('--', '–')
+        output.append(tex)
+    return output
+
+
 def tex2text(texs, args):
     texs = remove_tex_comments(texs)
     texs = replace_alt_text(texs, args)
     texs = replace_alt_text(texs, args, 'citeorstring')
     texs = replace_macros(texs, args)
+    texs = replace_spchars(texs, args)
     return texs
 
 
