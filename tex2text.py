@@ -215,6 +215,13 @@ def paren_if_needed(x):
     return x if x.isalnum() else '(' + x + ')'
 
 
+def env_func(x):
+    if x == 'abstract':
+        return ''
+    else:
+        raise NotImplementedError('environment {} is not supported'.format(x))
+
+
 PLAIN_MACROS = {
     'emph': identity_func,
     'textit': identity_func,
@@ -233,6 +240,8 @@ PLAIN_MACROS = {
     'operatorname': identity_func,
     'sqrt': delim_func('sqrt(', ')'),
     'frac': (lambda x, y: paren_if_needed(x) + '/' + paren_if_needed(y)),
+    'begin': env_func,
+    'end': env_func,
 }
 
 MARKDOWN_MACROS = {
@@ -256,8 +265,8 @@ MACROS = {
 MACROS['markdown'].update(MARKDOWN_MACROS)
 
 
-def unknown_macro_warn(name):
-    print('WARNING: unknown macro: \\' + name, file=sys.stderr)
+def warn_user(msg):
+    print('WARNING:', msg, file=sys.stderr)
     global retcode
     retcode = 1
 
@@ -283,14 +292,18 @@ def apply_macro(name, x, args, math_mode):
             elif name in INVISIBLE_SYMBOLS:
                 return ''
             else:
-                unknown_macro_warn(name)
+                warn_user('unknown macro: \\' + name)
                 return reconstruct_macro(name, x)
         else:
             macros = MACROS[args.fmt]
             if name in macros:
-                return macros[name](*x)
+                try:
+                    return macros[name](*x)
+                except NotImplementedError as e:
+                    warn_user(e.args[0])
+                    return reconstruct_macro(name, x)
             else:
-                unknown_macro_warn(name)
+                warn_user('unknown macro: \\' + name)
                 return reconstruct_macro(name, x)
 
 
