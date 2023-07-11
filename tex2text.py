@@ -16,6 +16,7 @@ SYMBOLS = {
     'infty': ('∞', 'infinity'),
     'because': ('∵', 'because'),
     'therefore': ('∴', 'therefore'),
+    'dots': ('…', '...'),
     'ldots': ('…', '...'),
     'cdots': ('⋯', '...'),
     'vdots': ('⋮', '...'),
