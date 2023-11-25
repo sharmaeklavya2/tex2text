@@ -133,6 +133,7 @@ SYMBOLS = {
     'nmid': ('∤', '!|'),
     'perp': ('⊥', 'perp'),
     'parallel': ('∥', '||'),
+    'defeq': (':=', ':='),
 
     # binary operators
     'pm': ('±', '+-'),
