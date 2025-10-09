@@ -479,6 +479,7 @@ def main():
     if args.fix_spacing:
         s = re.sub(r'([^\n])\n([^\n])', r'\1 \2', s)
         s = re.sub(r' +', r' ', s)
+        s = s.strip()
     if args.output:
         with open(args.output, 'w') as fp:
             fp.write(s)
